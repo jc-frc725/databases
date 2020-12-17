@@ -2,38 +2,49 @@ CREATE DATABASE chat;
 
 USE chat;
 
-CREATE TABLE messages (
-  /* Describe your table here.*/
-  /*id int NOT NULL,
-    username varchar(255) NOT NULL,
-    text varchar(255),
-    roomname varchar(255) NOT NULL,
-    timestamp Timestamp? NOT NULL
-    PRIMARY KEY (id),
-    FOREIGN KEY (username) REFERENCES users(username),
-    FOREIGN KEY (roomname) REFERENCES rooms(roomname)
-  */
+CREATE TABLE users(
+  id int NOT NULL,
+  username varchar(255) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE rooms(
+  id int NOT NULL,
+  roomname varchar(255) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE messages(
+  id int NOT NULL,
+  textbody varchar(255),
+  createdAt timestamp NOT NULL,
+  userId int NOT NULL,
+  roomId int NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (userId) REFERENCES users(id),
+  FOREIGN KEY (roomId) REFERENCES rooms(id)
+);
+
+CREATE TABLE users_rooms(
+  roomId int NOT NULL,
+  userId int NOT NULL,
+  FOREIGN KEY (roomId) REFERENCES rooms(id),
+  FOREIGN KEY (userId) REFERENCES users(id)
+);
+
+CREATE TABLE users_messages(
+  userId int NOT NULL,
+  messageId int NOT NULL,
+  FOREIGN KEY (userId) REFERENCES users(id),
+  FOREIGN KEY (messageId) REFERENCES messages(id)
 );
 
 CREATE TABLE rooms_messages(
-/*  id int NOT NULL,
-    room varchar(255),
-    PRIMARY KEY (id),
-    FOREIGN KEY (room) REFERENCES rooms(room_name)
-)
-
-/* Create other tables and define schemas for them here! */
-CREATE TABLE rooms (
-/* id int NOT NULL,
-   room_name varchar(255) REQUIRED,
-   PRIMARY KEY (id)
-*/
-)
-
-CREATE TABLE users (
-/*  id int NOT NULL,
-    user varchar(255) NOT NULL*/
-)
+  roomId int NOT NULL,
+  messageId int NOT NULL,
+  FOREIGN KEY (roomId) REFERENCES rooms(id),
+  FOREIGN KEY (messageId) REFERENCES messages(id)
+);
 
 
 
